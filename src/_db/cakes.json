@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Chocolate Truffle",
+    "image": "http://placehold.jp/200x150.png",
+    "url": "https://google.com",
+    "description": "Description 1",
+    "type": "NEW_ARRIVAL"
+  },
+  {
+    "title": "Amazing Black Forest Cake",
+    "image": "http://placehold.jp/200x150.png",
+    "url": "https://google.com",
+    "description": "Description 2",
+    "type": "BEST_SELLER"
+  },
+  {
+    "title": "Chocolate Truffle 3",
+    "image": "http://placehold.jp/200x150.png",
+    "url": "https://google.com",
+    "description": "Description 3",
+    "type": "PREMIUM"
+  },
+  {
+    "title": "Chocolate Truffle 4",
+    "image": "http://placehold.jp/200x150.png",
+    "url": "https://google.com",
+    "description": "Description 4",
+    "type": "BEST_SELLER"
+  }
+]
