@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
-    "vue": "^3.2.29"
+    "vue": "^3.2.29",
+    "vue-router": "next"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

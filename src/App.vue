@@ -37,24 +37,9 @@ onMounted(() => {
   </header>
 
   <main>
-    <div class="container">
-      <!-- Register -->
-      <!-- <Register /> -->
-
-      <!-- Login -->
-      <Login />
-
-      <!-- <Carousal /> -->
-      <Divider />
-
-      <!-- <div class="row">
-        Cake listing 
-        <CakeCard v-for="cake in cakes" :key="cake.name" :cake="cake" />
-      </div> -->
-
-      <!-- user listing -->
-      <!-- <Users /> -->
-    </div>
+      <div class="container">
+        <router-view></router-view>
+      </div>
   </main>
   
 </template>

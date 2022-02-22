@@ -24,7 +24,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">{{projectName}}</a>
+    <router-link class="navbar-brand" to="/">{{projectName}}</router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -48,11 +48,12 @@
           </ul>
         </li>
       </ul>
-      <form class="d-flex"> <!--  @submit="joinMeeting" -->
+      <form class="d-flex"> 
         {{search}}
         <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" @click="joinMeeting" type="submit">Search</button> <!-- @click="joinMeeting" -->
-        <button v-if="isUserLoggedIn" class="btn btn-danger" @click="joinMeeting" type="submit">Logout</button> <!-- @click="joinMeeting" -->
+        <button class="btn btn-outline-success me-2" @click="joinMeeting" type="submit">Search</button> <!-- @click="joinMeeting" -->
+        <router-link v-if="!isUserLoggedIn" class="btn btn-primary" to="/login">Login</router-link> <!-- @click="joinMeeting" -->
+        <router-link v-if="isUserLoggedIn" class="btn btn-danger" to="/login">Logout</router-link> <!-- @click="joinMeeting" -->
       </form>
     </div>
   </div>

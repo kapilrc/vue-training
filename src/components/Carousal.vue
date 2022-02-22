@@ -15,12 +15,12 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="https://imgcdn.floweraura.com/Final-Home-Page-banner-for-Toothsome-cakes.jpeg?tr=w-1583,q-70" class="d-block w-100" alt="...">
-    </div>
-    <!-- <div class="carousel-item">
-      <img src="http://placehold.jp/500x300.png" class="d-block w-100" alt="...">
+      <img width="1296" height="409" src="https://imgcdn.floweraura.com/Final-Home-Page-banner-for-Toothsome-cakes.jpeg?tr=w-1583,q-70" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
+      <img width="1296" height="409" src="http://placehold.jp/500x300.png" class="d-block w-100" alt="...">
+    </div>
+    <!-- <div class="carousel-item">
       <img src="http://placehold.jp/500x300.png" class="d-block w-100" alt="...">
     </div> -->
   </div>
