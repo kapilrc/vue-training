@@ -58,7 +58,7 @@
                 Remember me
               </label>
             </div> -->
-            <a href="/forgot-password" class="text-body">Forgot password?</a>
+            <router-link to="/forgot-password" class="text-body">Forgot password?</router-link>
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">

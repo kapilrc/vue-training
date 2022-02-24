@@ -20,16 +20,15 @@
     );
   }
 
-  onMounted(() => {
-    fetchCakes();
-  });
+  onMounted(fetchCakes);
 </script>
 
 <template>
   <Carousal />
+  <br />
     <h4>Cake listing </h4> 
 
-    <div class="row">
+    <div class="row row-cols-4">
       <CakeCard v-for="cake in cakes" :key="cake.name" :cake="cake" />
     </div>
 </template>

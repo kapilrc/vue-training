@@ -1,19 +1,31 @@
 <script setup>
+  import { onMounted } from 'vue';
+  import { logout } from '../_services/authService';
+
   defineProps(['isUserLoggedIn'])
 
   import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+import { getToken } from '../_services/authService';
 
   const projectName = "Online Cake shop";
 
   const search = ref("");
-
-  const joinMeeting = (e) => {
-    // e.preventDefault();
-    // onlineUsers.value++;
-  }
+  const router = useRouter();
 
   const searchByText = (e) => {
-    console.log(search.value);
+    e.preventDefault();
+    router.push({
+      path: 'search',
+      query: {
+        q: search.value
+      }
+    })
+  }
+
+  const logoutUser = async () => {
+    await logout();
+    router.push("/login");
   }
 </script>
 
@@ -22,6 +34,7 @@
 </style>
 
 <template>
+<div class="mb-5">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <router-link class="navbar-brand" to="/">{{projectName}}</router-link>
@@ -30,13 +43,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
+        </li> -->
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <router-link class="nav-link active" to="/add-cake">Add Cake</router-link>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown
           </a>
@@ -46,16 +59,15 @@
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
       <form class="d-flex"> 
-        {{search}}
         <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success me-2" @click="joinMeeting" type="submit">Search</button> <!-- @click="joinMeeting" -->
+        <button class="btn btn-outline-success me-2" @click="searchByText" type="submit">Search</button> <!-- @click="joinMeeting" -->
         <router-link v-if="!isUserLoggedIn" class="btn btn-primary" to="/login">Login</router-link> <!-- @click="joinMeeting" -->
-        <router-link v-if="isUserLoggedIn" class="btn btn-danger" to="/login">Logout</router-link> <!-- @click="joinMeeting" -->
+        <button type="button" v-if="isUserLoggedIn" class="btn btn-danger" @click="logoutUser">Logout</button> <!-- @click="joinMeeting" -->
       </form>
     </div>
   </div>
-</nav>
+</nav></div>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref, watch } from 'vue';
 
 import Navbar from './components/NavBar.vue'
 import Carousal from './components/Carousal.vue';
@@ -13,8 +13,11 @@ import Users from './components/Users.vue';
 // import cakes from "./_db/cakes.json"
 import { getCakes } from "./_services/cakeService";
 import Register from './components/Register.vue';
+import { getToken } from './_services/authService';
+import { useRouter } from 'vue-router';
 
 const cakes = ref([]);
+const router = useRouter();
 
 const fetchCakes = () =>  {
   return getCakes().then(res => cakes.value = res.data?.data, err => {
@@ -22,12 +25,18 @@ const fetchCakes = () =>  {
   });
 }
 
+const isUserLoggedIn = ref(getToken());
 
-const isUserLoggedIn = ref(false);
-
-onMounted(() => {
-  // fetchCakes();
+router.beforeEach((to, from, next) => {
+  console.log("before route");
+  isUserLoggedIn.value = getToken();
+  next();
 });
+
+onUpdated(() => {
+  isUserLoggedIn.value = getToken();
+});
+
 
 </script>
 
@@ -37,7 +46,7 @@ onMounted(() => {
   </header>
 
   <main>
-      <div class="container">
+      <div class="container-xxl">
         <router-view></router-view>
       </div>
   </main>
