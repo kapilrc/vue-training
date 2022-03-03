@@ -1,29 +1,62 @@
 <script setup>
   import { onMounted, ref } from '@vue/runtime-core';
-  import { getCart, removeItemFromCart } from '../_services/cartService';
+  import { reactive } from 'vue';
 
+  import PriceBreakup from './PriceBreakup.vue';
+  import CartList from './CartList.vue';
+  import { useCartStore } from '../stores/cart';
 
-const cart = ref([]);
-let total = ref(0);
-const deliveryCharges = 50;
+  const { cartItems, fill,  addCartItem, removeAQuantity, removeCartItem } = useCartStore();
 
-const calculateTotal = () => {
-  const values = cart.value.map(item => item.price);
-  total.value = values.reduce((prevVal, newVal) => prevVal + newVal, 0)
-}
+  let cart = ref(cartItems);
 
-const removeItem = (cake) => {
-  return removeItemFromCart(cake.cakeid).then(res => console.log("item removed", res), err => console.error(err))
-}
+  const loadCart = async () => {
+    if(cartItems.length) {
+      cart.value = cartItems;
+      return;
+    }
+    try {
+      cart.value = await fill();
+    }catch (err) {
+      console.error(err)
+    }
+  }
+  
 
-const loadCart = () => {
-  return getCart().then(res => {
-    cart.value = res.data?.data;
-    calculateTotal();
-  }, err => console.error(err));
-}
+  let priceSummary = reactive({
+    total: 0,
+    deliveryCharge: 50,
+    discount: 0,
+    items: cart.value.length  // cart.length
+  });
 
-onMounted(loadCart);
+  const addQuantity = async (cake, index) => {
+    const {cakeid, name, price, image, weight, quantity} = cake;
+
+    try {
+      cart.value = await addCartItem({cakeid, name, price, image, weight, quantity});
+    }catch(err) {
+      err => console.error(err);
+    }
+  }
+
+  const removeQuantity = async (cake, index) => {
+    try {
+      cart.value  = await removeAQuantity(cake)
+    } catch(err) {
+      err => console.error(err);
+    }
+  }
+
+  const removeItem = async (cakeid) => {
+    try {
+      cart.value  = await removeCartItem(cakeid)
+    } catch(err) {
+      err => console.error(err);
+    }
+  }
+
+  onMounted(loadCart);
 
 </script>
 
@@ -45,16 +78,25 @@ onMounted(loadCart);
     bottom: 0;
     top: auto;
   }
-
-  .checkout {
-    height: fit-content;
-  }
-  .total {
-    border-top: 1px dashed #dcdcdc;
-    border-bottom: 1px dashed #dcdcdc;
-  }
   h6 {
     border-bottom: 1px dashed #dcdcdc;
+  }
+  .qty-box {
+
+  }
+  .qty-box > * {
+    text-align: center;
+  }
+  .qty-box .qty-btn {
+    border-radius: 0;
+  }
+  .qty-box button {
+    border-radius: 50%;
+    border: 1px solid #dcdcdc;
+    height: 35px;
+    width: 35px;
+    margin: 0 5px;
+    line-height: 1;
   }
 
 </style>
@@ -63,51 +105,38 @@ onMounted(loadCart);
   <div class="row">
     <div class="card col-12 col-sm-8">
       <h6 class="pb-2 mb-3">MY CART </h6>
-      <div class="card" v-for="(cake) in cart" :key="cake.cakeid">
+      <!-- <CartList v-for="(cake, index) in cart" 
+        :key="cake.cakeid" 
+        :cart="cart" 
+        :removeQuantity="() => removeQuantity(cake, index)"
+        :addQuantity="() => addQuantity(cake, index)"
+        :removeItem="() => removeItem(cake.cakeid, index)"
+      /> -->
+      <div class="card" v-for="(cake, index) in cart" :key="cake?.cakeid"> <!-- cart -->
         <div class="row">
           <div class="col-2">
-            <img width="100" height="100" :src="cake?.image" />
+            <img width="110" height="110" :src="cake?.image" />
+            <div class="qty-box row text-center mt-2">
+              <button type="button" @click="removeQuantity(cake, index)" class="col-3 btn btn-light">-</button>
+              <button type="button" class="col-3 qty-btn btn btn-light">{{cake?.quantity}}</button>
+              <button type="button" @click="addQuantity(cake, index)" class="col-3 btn btn-light">+</button>
+            </div>
           </div>
-          <div class="col-10">
+          <div class="col-9 gx-3">
             <h5>{{cake?.name}} <span class="text-muted">({{cake?.weight}} kg)</span></h5>
             <div>Estimated delivery: <span class="text-success">Today</span></div>
             <br />
-            <div>Qty: {{cake?.eggless ? "Eggless" : "Veg" }}</div>
+            <br />
+            <br />
             <div>Type: {{cake?.eggless ? "Eggless" : "Veg" }}</div>
 
-            <h5 class="price">Rs. {{cake?.price}}</h5>
-            <button @click="() => removeItem(cake)" class="btn btn-danger">Remove </button>
+            <h5 class="price">Rs. {{cake?.price * cake?.quantity}}</h5>
+            <button @click="removeItem(cake.cakeid)" class="btn btn-danger">Remove </button>
           </div>
         </div>
-        </div>
+      </div>
     </div>
-    <div class="card checkout col-12 col-sm-3 ms-3">
-      <h6 class="pb-2 mb-3">PRICE DETAILS </h6>
-      <div class="row p-2">
-        <div class="col-9">
-          Price ({{cart?.length}} items):
-        </div>
-        <div class="col-3 text-end">
-          {{total}}
-        </div>
-      </div>
-      <div class="row p-2">
-        <div class="col-9">
-          Delivery Charges:
-        </div>
-        <div class="col-3 text-end">
-          {{deliveryCharges}}
-        </div>
-      </div>
-      <div class="row total p-2 mb-3">
-        <div class="col-9">
-          Cart total:
-        </div>
-        <div class="col-3 text-end">
-          {{total + deliveryCharges}}
-        </div>
-      </div>
-      <button type="button" class="btn btn-warning btn-lg">Place Order </button>
-    </div>
+    
+    <PriceBreakup :showBtn="true" />
   </div>
 </template>

@@ -1,11 +1,14 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+import { useCartStore } from '../stores/cart';
   import { addCakeToCart, getCakeDetails } from '../_services/cakeService';
 
   const route = useRoute();
   const router = useRouter();
   const cakeid = route.params.id;
+
+  const cartStore = useCartStore();
 
   let cake = ref();
 
@@ -19,18 +22,23 @@
   }
 
 
-  const addToCart = (cake) => {
+  const addToCart = (cake, backToHome) => {
     const {cakeid, name, price, image, weight} = cake;
     
     return addCakeToCart({cakeid, name, price, image, weight}).then(res => {
       // navigate to card page
-      router.push("/cart")
+      const item = res.data?.data;
+      if(item) {
+        cartStore.addCartItem(item);
+        const path = backToHome ? "/" : "/cart";
+        router.push(path);
+        return;
+      }
+      console.error(res.data?.message);
     }, err => console.error(err));
   }
 
-  onMounted(() => {
-    fetchCakeDetails();
-  });
+  onMounted(fetchCakeDetails);
 </script>
 
 <style scoped>
@@ -75,25 +83,29 @@
       <div class="col-12 col-md-5">
         <div class="image-gradient">
       </div>
-        <img :src="cake?.image" />
+        <img :src="cake?.image" alt="loading..." />
       </div>
 
       <div class="col-12 col-md-7 ps-5">
-          <h4>{{cake?.name}}</h4>
+          <h4>{{cake?.name}} <span class="text-muted">({{cake?.weight}} kg)</span></h4>
           <div>{{cake?.ratings}} <span class="text-muted">({{cake?.reviews}} Reviews)</span></div>
           <br />
 
           <h3>Rs. {{cake?.price}}</h3>
+          <br />
+          <h5>Ingredients</h5>
+          <ul>
+            <li v-for="item in cake?.ingredients" :key="item">{{item}}</li>
+          </ul>
 
-          <br /><br />
-          <br /><br />
+          <br />
           <div class="row">
             <div class="col-6">
               <button 
                 type="button"
                 class="btn btn-warning"
                 style="width: 100%"
-                @click="() => addToCart(cake)"
+                @click="() => addToCart(cake, true)"
               >Add to cart</button>
             </div>
             <div class="col-6">
@@ -101,6 +113,7 @@
                 type="button" 
                 class="btn btn-success"
                 style="width: 100%"
+                @click="() => addToCart(cake)"
                  >Buy Now</button>
             </div>
           </div>

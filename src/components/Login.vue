@@ -1,32 +1,45 @@
 <script setup>
 
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { login } from '../_services/authService';
+  import { useUserStore } from '../stores/user';
 
   const router = useRouter();
 
-  const user = ref({
-    email: "",
-    password: ""
-  });
+  const { loginUser, user: useData, authtoken } = useUserStore();
+  const user = ref(useData);
 
-  const loginUser = (e) => {
+  const routeToHome = () => router.push("/");
+
+
+  const login = async (e) => {
     e.preventDefault();
-    return login(user.value).then(res => {
+    try {
+      const data =  await loginUser(user.value);
+      data?.token && routeToHome();
       user.value = {};
-      res.data?.token && router.push("/")
-    }, err => {
+    } catch(err) {
       console.error("login error", err);
-    });
+    }
   }
+
+  onMounted(() => {
+    if(useData && authtoken) {
+      routeToHome();
+    }
+  })
 </script>
 
-<style>
+<style scoped>
+  .login-container {
+    position: absolute;
+    top: 40vh;
+    transform: translateY(-50%);
+  }
 </style>
 
 <template>
-  <section class="vh-100">
+  <section class="login-container">
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
@@ -34,7 +47,7 @@
           alt="Sample image">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form @submit="loginUser" >
+        <form @submit="login" >
 
           <!-- Email input -->
           <div class="form-outline mb-4">
@@ -51,13 +64,6 @@
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
-            <!-- Checkbox -->
-            <!-- <div class="form-check mb-0">
-              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-              <label class="form-check-label" for="form2Example3">
-                Remember me
-              </label>
-            </div> -->
             <router-link to="/forgot-password" class="text-body">Forgot password?</router-link>
           </div>
 

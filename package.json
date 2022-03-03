@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "pinia": "next",
     "vue": "^3.2.29",
     "vue-router": "next"
   },

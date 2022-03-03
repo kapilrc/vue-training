@@ -10,18 +10,37 @@ import CakeDetail from "./components/CakeDetail.vue";
 import Search from "./components/Search.vue";
 import PageNotFound from "./components/PageNotFound.vue";
 import Cart from "./components/Cart.vue";
+import Checkout from "./components/Checkout.vue";
+import Summary from "./components/Summary.vue";
+import Address from "./components/Address.vue";
+import Payment from "./components/Payment.vue";
+import OrderResponse from "./components/OrderResponse.vue";
 
 
 const routes = [
-  { path: "/", name: "Dashboard", component: Dashboard },
-  { path: "/login", name: "Login", component: Login },
-  { path: "/register", name: "Register", component: Register },
-  { path: "/dashboard", name: "Users", component: Users },
-  { path: "/cakes", name: "Cakes", component: CakeCard },
-  { path: "/add-cake", name: "Add Cake", component: AddCake },
-  { path: "/cake/detail/:id", name: "Cake Detail", component: CakeDetail },
-  { path: "/search", name: "Search", component: Search },
-  { path: "/cart", name: "Cart", component: Cart },
+  { path: "/", component: Dashboard },
+  { path: "/login", component: Login },
+  { path: "/register", component: Register },
+  { path: "/dashboard", component: Users },
+  { path: "/cakes", component: CakeCard },
+  { path: "/add-cake", component: AddCake },
+  { path: "/cake/detail/:id", component: CakeDetail },
+  { path: "/search", component: Search },
+  { path: "/cart", component: Cart },
+  { 
+    path: "/checkout", 
+    name: "Checkout", 
+    component: Checkout, 
+    children: [
+      { path:"", redirect: "/checkout/summary"},
+      { path:"summary", component: Summary},
+      { path:"address", component: Address},
+      { path:"payment", component: Payment}
+    ] 
+  },
+  { path: "/order-response", component: OrderResponse },
+  
+  
 
 
   // otherwise redirect to 404

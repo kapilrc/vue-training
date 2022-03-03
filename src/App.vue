@@ -15,6 +15,8 @@ import { getCakes } from "./_services/cakeService";
 import Register from './components/Register.vue';
 import { getToken } from './_services/authService';
 import { useRouter } from 'vue-router';
+import { useUserStore } from './stores/user';
+import { storeToRefs } from 'pinia';
 
 const cakes = ref([]);
 const router = useRouter();
@@ -25,23 +27,27 @@ const fetchCakes = () =>  {
   });
 }
 
-const isUserLoggedIn = ref(getToken());
+const { user, authtoken } = storeToRefs(useUserStore());
 
-router.beforeEach((to, from, next) => {
-  console.log("before route");
-  isUserLoggedIn.value = getToken();
-  next();
-});
+const isUserLoggedIn = authtoken;
 
-onUpdated(() => {
-  isUserLoggedIn.value = getToken();
-});
+// router.beforeEach((to, from, next) => {
+//   console.log("before route");
+//   // isUserLoggedIn.value = getToken();
+//   isUserLoggedIn.value = useUserStore().user?.token;
+//   next();
+// });
+
+// onUpdated(() => {
+//   // isUserLoggedIn.value = getToken();
+//   isUserLoggedIn.value = useUserStore().user?.token;
+// });
 
 
 </script>
 
 <template>
-  <header>
+  <header v-if="isUserLoggedIn">
     <Navbar :isUserLoggedIn="isUserLoggedIn" />
   </header>
 

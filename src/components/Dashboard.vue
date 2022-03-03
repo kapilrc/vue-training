@@ -3,11 +3,19 @@
 
   import Carousal from "./Carousal.vue";
   import CakeCard from "./CakeCard.vue";
+import { getToken } from "../_services/authService";
+import { useUserStore } from "../stores/user";
 
+  const router = useRouter();
 
-  // import mock data
-  // import cakes from "./_db/cakes.json"
+  const {user, authtoken} = useUserStore();
+
+  if(!authtoken){
+    router.push("/login")
+  }
+
   import { getCakes } from "./../_services/cakeService";
+  import { useRouter } from "vue-router";
 
   const cakes = ref([]);
 

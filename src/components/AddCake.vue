@@ -19,8 +19,6 @@ const setImageFile = () => {
   fileName.value = document.getElementById("formFile").files[0];
   formData.value = new FormData();
   formData.value.append("file", fileName.value);
-
-  console.log(formData.value, fileName.value);
 }
 
 const uploadImage = (e) => {
@@ -33,7 +31,7 @@ const uploadImage = (e) => {
 <template>
  <div class="mx-auto">
   <form class="row g-3 m-4">
-    <h1 class="text-right "> Add Cake</h1>
+    <h1 class="text-right "> Add Cake (WIP)</h1>
     <div>Cake Image</div>
     
   <div class="col-md-6">
@@ -44,9 +42,6 @@ const uploadImage = (e) => {
     <br />
    <button type="button" class="btn btn-primary mt-2" @click="uploadImage">Upload</button>
   </div>
-
-
-
 
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Cake Name</label>

@@ -7,6 +7,6 @@
 
 <template>
   <h1>
-    Hello World!
+    Order Placed
   </h1>
 </template>
