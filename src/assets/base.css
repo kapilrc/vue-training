@@ -73,6 +73,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a.link-dark, a.link-dark:visited {
+  text-decoration: none;
+}
+a.link-dark:hover {
+  text-decoration: underline;
+}
+
+
 @keyframes fadeInFromNone {
   0% {
       display: none;

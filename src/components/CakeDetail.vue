@@ -1,8 +1,7 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-import { useCartStore } from '../stores/cart';
-  import { addCakeToCart, getCakeDetails } from '../_services/cakeService';
+  import { useCartStore } from '../stores/cart';
 
   const route = useRoute();
   const router = useRouter();
@@ -12,30 +11,25 @@ import { useCartStore } from '../stores/cart';
 
   let cake = ref();
 
-  const fetchCakeDetails = () =>  {
-    return getCakeDetails(cakeid).then(
-      res => cake.value = res.data?.data,
-      err => {
-        console.error(err);
-      }
-    );
+  const fetchCakeDetails = async () =>  {
+    try {
+    const res = await cartStore.getCakeDetails(cakeid)
+      cake.value = res.data?.data
+    } catch(err) {
+      console.error(err);
+    }
   }
 
 
-  const addToCart = (cake, backToHome) => {
+  const addToCart = async (cake, backToHome) => {
     const {cakeid, name, price, image, weight} = cake;
-    
-    return addCakeToCart({cakeid, name, price, image, weight}).then(res => {
-      // navigate to card page
-      const item = res.data?.data;
-      if(item) {
-        cartStore.addCartItem(item);
-        const path = backToHome ? "/" : "/cart";
-        router.push(path);
-        return;
-      }
-      console.error(res.data?.message);
-    }, err => console.error(err));
+    try {
+    const res = await cartStore.addCartItem({cakeid, name, price, image, weight})
+    const path = backToHome ? "/" : "/cart";
+    router.push(path);
+    } catch(err) {
+      console.error(err)
+    };
   }
 
   onMounted(fetchCakeDetails);

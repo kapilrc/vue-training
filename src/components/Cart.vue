@@ -108,7 +108,9 @@
       <div class="card" v-for="(cake, index) in cart" :key="cake?.cakeid"> <!-- cart -->
         <div class="row">
           <div class="col-2">
-            <img width="110" height="110" :src="cake?.image" />
+            <router-link :to="`/cake/detail/${cake?.cakeid}`">
+              <img width="110" height="110" :src="cake?.image" />
+            </router-link>
             <div class="qty-box row text-center mt-2">
               <button type="button" @click="removeQuantity(cake, index)" class="col-3 btn btn-light">-</button>
               <button type="button" class="col-3 qty-btn btn btn-light">{{cake?.quantity}}</button>
@@ -116,7 +118,7 @@
             </div>
           </div>
           <div class="col-9 gx-3">
-            <h5>{{cake?.name}} <span class="text-muted">({{cake?.weight}} kg)</span></h5>
+            <h5><router-link :to="`/cake/detail/${cake?.cakeid}`" class="link-dark">{{cake?.name}} </router-link><span class="text-muted">({{cake?.weight}} kg)</span></h5>
             <div>Estimated delivery: <span class="text-success">Today</span></div>
             <br />
             <br />

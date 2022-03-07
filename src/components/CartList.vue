@@ -1,31 +1,10 @@
 <script setup>
-  import { onMounted, onUpdated, ref, watch, computed } from '@vue/runtime-core';
-import { reactive } from 'vue';
-  import { addCakeToCart } from '../_services/cakeService';
-  import { cartTotal } from '../_helper/cartTotal';
-
-
-  const {cart, removeQuantity, addQuantity, removeItem } = defineProps(['cart', 'removeQuantity', 'addQuantity', 'removeItem'])
-
-// watch(() => cart.value.map(item => item.quantity), (newVal, oldVal) => { // watch it
-//   cart.value = cart.value;
-//   reloadKey.value = reloadKey.value + 1;
-//   const total = cartTotal(cart.value);
-  
-//   // priceSummary = {
-//   //   ...priceSummary,
-//   //   total,
-//   //   deliveryCharge: total > 1000 ? 0 : 50,
-//   //   discount: 0,
-//   //   items: cart.value.length
-//   // }
-//   priceSummary.total = total;
-//   priceSummary.discount = total;
-//   priceSummary.deliveryCharge = total > 1000 ? 0 : 50;
-//   priceSummary.items = cart.value.length;
-//   console.log("new priceSummary", priceSummary);
-// });
-
+  const {
+    cart, 
+    removeQuantity, 
+    addQuantity, 
+    removeItem 
+  } = defineProps(['cart', 'removeQuantity', 'addQuantity', 'removeItem'])
 
 </script>
 

@@ -31,15 +31,19 @@ export const useCartStore = defineStore('cart', {
         throw new Error (error);
       }
     },
+
+    async getCakeDetails(id) {
+      return await Api.get(`/cake/${id}`)
+    },
     async addCartItem(item) {
       try {
         const { data } = await Api.post("/addcaketocart", item, {
           headers: {authtoken: this.authtoken}
         })
         if(data?.data) {
-          let existingItem = this.cartItems.find((it) => it.cakeid === item.cakeid)
+          let existingItem = this.cartItems.find((it) => it.cakeid == item.cakeid)
           if (!existingItem) {
-            this.cartItems.push(item)
+            this.cartItems.push(data.data)
           } else {
             existingItem = {...existingItem, quantity: existingItem.quantity++ }
           }
@@ -60,7 +64,7 @@ export const useCartStore = defineStore('cart', {
         if(data?.Error?.includes("Error")) {
           throw new Error (data?.message);
         }
-        let existingItem = this.cartItems.find((it) => it.cakeid === cakeid)
+        let existingItem = this.cartItems.find((it) => it.cakeid == cakeid)
         const newQuantity = quantity - 1,
           index = this.cartItems.indexOf(existingItem)
         if(newQuantity){
@@ -82,7 +86,7 @@ export const useCartStore = defineStore('cart', {
         if(data?.error?.includes("Error")) {
           throw new Error (data?.message);
         }
-        const existingItem = this.cartItems.find((it) => it.cakeid === cakeid);
+        const existingItem = this.cartItems.find((it) => it.cakeid == cakeid);
         const index = this.cartItems.indexOf(existingItem)
         this.cartItems.splice(index,1);
         return this.cartItems;
