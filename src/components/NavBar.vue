@@ -3,19 +3,20 @@
   import { useCartStore } from '../stores/cart';
   import { useUserStore } from '../stores/user';
 
-  defineProps(['isUserLoggedIn'])
-
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { storeToRefs } from 'pinia';
+
+  defineProps(['isUserLoggedIn'])
 
   const projectName = "Online Cake shop";
 
+  const {authtoken} = storeToRefs(useUserStore());
   const userStore = useUserStore();
   const cartStore = useCartStore();
 
   const search = ref("");
   const router = useRouter();
-
   const searchByText = (e) => {
     e.preventDefault();
     router.push({
@@ -29,12 +30,12 @@
   const logout = async () => {
     await userStore.logoutUser();
     localStorage.clear();
-    cartStore.$reset();
-    userStore.$reset();
-    router.push("/login");
+    window.location.href ="/";
   }
 
   const fillCart = async () => {
+    if(!authtoken.value) return;
+
     try {
       const data = await cartStore.fill();
       console.log(data);

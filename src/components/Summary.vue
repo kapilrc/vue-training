@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { cartTotal } from '../_helper/cartTotal';
 import { getCart } from '../_services/cartService';
-import PriceBreakup from './PriceBreakup.vue';
 
 const router = useRouter();
 const cartStore = useCartStore();
@@ -13,19 +12,6 @@ const cart = ref(cartStore.cartItems);
 if(!cart.value.length) {
   router.push("/cart");
 }
-
-// watch(() => cart.value.map(item => item.quantity), (newVal, oldVal) => { // watch it
-//   cart.value = cart.value;
-//   const total = cartTotal(cart.value);
-// });
-
-// const loadCart = () => {
-//   return getCart().then(res => {
-//     cart.value = res.data?.data;
-//   }, err => console.error(err));
-// }
-
-// onMounted(loadCart);
 </script>
 
 <style>

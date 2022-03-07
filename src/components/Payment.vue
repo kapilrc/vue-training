@@ -6,17 +6,14 @@ import { useCartStore } from '../stores/cart';
 
   const router = useRouter();
 
-  const { cartItems, purchaseItems, priceBreakUp, getCakeIds } = useCartStore();
+  const { cartItems, purchaseItems, getCakeIds, total } = useCartStore();
   const { address } = useAddressStore();
-
-  // {name,address,city,pincode,phone,cakes,price}
-
 
   const placeOrder = async (e) => {
     e.preventDefault();
 
     try {
-      const order = purchaseItems({...address, pincode: address.pin, cakes: cartItems, price: priceBreakUp.total });
+      await purchaseItems({...address, cakes: cartItems, price: total });
       router.push("/order-response")
     }catch (err) {
       console.error("error placing order ", err)

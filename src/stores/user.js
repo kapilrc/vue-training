@@ -5,13 +5,12 @@ import Api from "../_services/Api";
 export const useUserStore = defineStore('AuthUserStore', {
   state: () => ({
     user: JSON.parse(localStorage.getItem("user")) || {},
-    authtoken: null,
+    authtoken: localStorage.getItem("authtoken") || null,
     storedUser: null
-    // ...
   }),
 
   getters: {
-    authtoken: (state) => localStorage.getItem("authtoken"),
+    getToken: (state) => state.authtoken || localStorage.getItem("authtoken"),
     storedUser: (state) => localStorage.getItem("user")
   },
 
@@ -22,6 +21,7 @@ export const useUserStore = defineStore('AuthUserStore', {
 
 
     setToken(token) {
+      this.authtoken = token;
       localStorage.setItem("authtoken", token);
     },
 

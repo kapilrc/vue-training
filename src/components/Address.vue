@@ -29,7 +29,7 @@ import router from '../router';
         </span>
         </h5>
       <p>{{addressDetails.address}}, {{addressDetails.city}}</p>
-      <p>{{addressDetails.pin}}, Phone - {{addressDetails.phone}}</p>
+      <p>{{addressDetails.pincode}}, Phone - {{addressDetails.phone}}</p>
 
       <div class="col-auto">
       <router-link to="payment" @click="editAddress" class="btn btn-primary">Save and Deliver Here</router-link>
@@ -47,7 +47,7 @@ import router from '../router';
       </div>
       <div class="row g-3">
         <div class="col-auto">
-          <input type="number" class="form-control" v-model="addressDetails.pin" placeholder="Pin">
+          <input type="number" class="form-control" v-model="addressDetails.pincode" placeholder="Pin">
         </div>
         <div class="col-auto">
           <input type="text" class="form-control" v-model="addressDetails.city" placeholder="City">

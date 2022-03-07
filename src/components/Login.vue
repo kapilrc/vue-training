@@ -1,13 +1,15 @@
 <script setup>
 
-  import { onMounted, ref } from 'vue';
+  import { storeToRefs } from 'pinia';
+import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { useUserStore } from '../stores/user';
 
   const router = useRouter();
 
-  const { loginUser, user: useData, authtoken } = useUserStore();
-  const user = ref(useData);
+  const { user, authtoken } = storeToRefs(useUserStore());
+  const {loginUser} = useUserStore();
+  console.log("hi")
 
   const routeToHome = () => router.push("/");
 
@@ -17,14 +19,14 @@
     try {
       const data =  await loginUser(user.value);
       data?.token && routeToHome();
-      user.value = {};
+      // user.value = {};
     } catch(err) {
       console.error("login error", err);
     }
   }
 
   onMounted(() => {
-    if(useData && authtoken) {
+    if(Object.keys(user.value).length && authtoken.value) {
       routeToHome();
     }
   })

@@ -105,13 +105,6 @@
   <div class="row">
     <div class="card col-12 col-sm-8">
       <h6 class="pb-2 mb-3">MY CART </h6>
-      <!-- <CartList v-for="(cake, index) in cart" 
-        :key="cake.cakeid" 
-        :cart="cart" 
-        :removeQuantity="() => removeQuantity(cake, index)"
-        :addQuantity="() => addQuantity(cake, index)"
-        :removeItem="() => removeItem(cake.cakeid, index)"
-      /> -->
       <div class="card" v-for="(cake, index) in cart" :key="cake?.cakeid"> <!-- cart -->
         <div class="row">
           <div class="col-2">
