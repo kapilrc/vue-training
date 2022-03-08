@@ -61,6 +61,11 @@
 </script>
 
 <style scoped>
+  .empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .card {
     padding: 15px 10px;
     margin-bottom: 20px;
@@ -103,7 +108,9 @@
 
 <template>
   <div class="row">
-    <div class="card col-12 col-sm-8">
+
+    <div v-if="!cart.length" class="card col-12 col-sm-8 empty"><h4> Your cart is empty!</h4></div>
+    <div v-if="cart.length" class="card col-12 col-sm-8">
       <h6 class="pb-2 mb-3">MY CART </h6>
       <div class="card" v-for="(cake, index) in cart" :key="cake?.cakeid"> <!-- cart -->
         <div class="row">

@@ -1,19 +1,15 @@
 <script setup>
-  import { onMounted } from 'vue';
-  import { useCartStore } from '../stores/cart';
   import { useUserStore } from '../stores/user';
 
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { storeToRefs } from 'pinia';
+  import Basket from './Basket.vue';
 
   defineProps(['isUserLoggedIn'])
 
   const projectName = "Online Cake shop";
 
-  const {authtoken} = storeToRefs(useUserStore());
   const userStore = useUserStore();
-  const cartStore = useCartStore();
 
   const search = ref("");
   const router = useRouter();
@@ -32,19 +28,6 @@
     localStorage.clear();
     window.location.href ="/";
   }
-
-  const fillCart = async () => {
-    if(!authtoken.value) return;
-
-    try {
-      const data = await cartStore.fill();
-      console.log(data);
-    }catch(err) {
-      console.error(err);
-    }
-  }
-
-  onMounted(fillCart);
 </script>
 
 
@@ -64,13 +47,11 @@
         <li class="nav-item">
           <router-link class="nav-link active" to="/add-cake">Add Cake</router-link>
         </li>
-        <li class="nav-item">
-          <router-link class="nav-link active" to="/cart">Cart ({{cartStore.count}})</router-link>
-        </li>
       </ul>
       <form class="d-flex"> 
         <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success me-2" @click="searchByText" type="submit">Search</button>
+        <Basket />
         <router-link v-if="!isUserLoggedIn" class="btn btn-primary" to="/login">Login</router-link> 
         <button type="button" v-if="isUserLoggedIn" class="btn btn-danger" @click="logout">Logout</button>
       </form>
